@@ -21,6 +21,7 @@ s3 = boto3.client('s3')
 #client = 'proag'
 # s3_raster_prefix = f'data/cropid/{season}/proag/'
 batch = boto3.client('batch', region_name='eu-central-1')
+# s3_geojson_path - all clients clus vector file
 s3_geojson_path = 'pw-nau-data/crop-classification/rs_input/CI2_NAU_all_clus_for_Y2N2.geojson'
 s3_geojson_cluid_field = 'CommonLand'
 #client_bucket = 'hudson-client-data' if client == 'hudson' else 'proag-data'

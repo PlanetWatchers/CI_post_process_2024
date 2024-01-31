@@ -23,16 +23,12 @@ parser.add_argument('-f', '--from_values', required=False, nargs='+', type=int, 
 parser.add_argument('-t', '--to_values', required=False, nargs='+', type=int,
                     default=[102, 41, 21, 81, 11, 81, 101],
                     help='set to values to reclassify')
-
-parser.add_argument('-output_folder2', '--output_folder2', required=False, help='Specify directory that will contain cropscape masked tiles',
-                    default=r"C:\Users\User\Documents\ProAg_2023_CC\ProAg_2023_InSeason\CropScape_years_tiles")
 parser.add_argument('-shapefile_path', '--shapefile_path', required=False, help='Specify directory that contains us_grid shapefile',
                     default=r"C:\Users\User\Documents\ProAg_FMH_CC_2023\Combined_CC_2023_vars\Combined_us_grid_clus_2023\us_grid_proag_FMH_2023.shp")
 args = parser.parse_args()
 saveDir = args.directory
 Ynumber = "_" + saveDir.split("\\")[-1].split("_")[0]
 saveDir2 = args.directory2
-output_folder2 = args.output_folder2
 shapefile_path = args.shapefile_path
 
 
@@ -122,36 +118,36 @@ for file1 in files1[:2]:
                                 print(f"Finished sieving & poria & masks & reclassifying: \n{file1} \nto: {output_folder}")
 #######################################################################################################################
 ######################### if no poria needed #############################################
-for file1 in files1:
-    # Check if the file is a raster tiff
-    if file1.endswith(".tif"):
-        print(file1, 'file1-first')
-        raster_name = str(file1[:-4])
-        # Extract the split parts of the raster name from the file name
-        raster_parts = os.path.splitext(file1)[0].split("_")
-        raster_parts1 = raster_parts[1]
-        print(raster_parts1, 'raster_part-first')
-        # define the from and to values
-        from_values = args.from_values
-        to_values = args.to_values
-        with rasterio.open(os.path.join(saveDir, file1)) as src1:
-            output_arr = src1.read(1).astype(args.dtype)
-            # mask - true false for sieve only on crop pixels
-            mask = np.where(output_arr == 0, False, True)
-            output_arr = output_arr.astype(np.uint8)
-            ############################################################################
-            # apply sieve
-            array = sieve(output_arr, size=args.size, connectivity=args.connectivity, mask=mask)
-            # match CC args value to the new ones based on the USDA values.
-            for fv, tv in zip(from_values, to_values):
-                array = np.where(array == fv, tv, array)
-            # put back 102 pixels that were runned over in sieve
-            array = np.where(output_arr == 0, 102, array)
-            output_profile = src1.profile
-            output_profile.update({"dtype": args.dtype, "compress": 'lzw'})
-            # Write the output numpy array to the output raster file
-
-            save_name = os.path.basename(file1)[:-4].split("_")[:3]
+# for file1 in files1:
+#     # Check if the file is a raster tiff
+#     if file1.endswith(".tif"):
+#         print(file1, 'file1-first')
+#         raster_name = str(file1[:-4])
+#         # Extract the split parts of the raster name from the file name
+#         raster_parts = os.path.splitext(file1)[0].split("_")
+#         raster_parts1 = raster_parts[1]
+#         print(raster_parts1, 'raster_part-first')
+#         # define the from and to values
+#         from_values = args.from_values
+#         to_values = args.to_values
+#         with rasterio.open(os.path.join(saveDir, file1)) as src1:
+#             output_arr = src1.read(1).astype(args.dtype)
+#             # mask - true false for sieve only on crop pixels
+#             mask = np.where(output_arr == 0, False, True)
+#             output_arr = output_arr.astype(np.uint8)
+#             ############################################################################
+#             # apply sieve
+#             array = sieve(output_arr, size=args.size, connectivity=args.connectivity, mask=mask)
+#             # match CC args value to the new ones based on the USDA values.
+#             for fv, tv in zip(from_values, to_values):
+#                 array = np.where(array == fv, tv, array)
+#             # put back 102 pixels that were runned over in sieve
+#             array = np.where(output_arr == 0, 102, array)
+#             output_profile = src1.profile
+#             output_profile.update({"dtype": args.dtype, "compress": 'lzw'})
+#             # Write the output numpy array to the output raster file
+#
+#             save_name = os.path.basename(file1)[:-4].split("_")[:3]
             # save_name = "_".join(save_name)
             # with rasterio.open(os.path.join(output_folder, 'new_' + save_name + Ynumber + '_PoPr.tif'), 'w',
             #                    **output_profile) as output_dst:

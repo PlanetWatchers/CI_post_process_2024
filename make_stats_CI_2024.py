@@ -28,6 +28,8 @@ CODES_DICT = {
 features_file = sys.argv[1]
 gdf = gpd.read_file(sys.argv[1])
 client_bucket = sys.argv[2]
+CI_num = sys.argv[3]
+Y_num = CI_num.replace("CI", "Y")
 
 with open(features_file) as src:
     features = json.load(src)['features']
@@ -157,13 +159,13 @@ for f in files:
         })
 
 current_time = datetime.datetime.now().date().isoformat().replace('-', '')
-with open(f'crops_acres_{current_time}.csv', 'w') as out:
+with open(f'{Y_num}_crops_acres_{current_time}.csv', 'w') as out:
     csv_reader = csv.writer(out)
     csv_reader.writerow(('clu_id', 'crop code', 'crop name', 'acres'))
     for r in results:
         csv_reader.writerow((r['clu_id'], r['crop code'], r['crop name'], r['acres']))
 
-with open(f'crops_acres_consolidated_{current_time}.csv', 'w') as out:
+with open(f'{Y_num}_crops_acres_consolidated_{current_time}.csv', 'w') as out:
     csv_reader = csv.writer(out)
     header = (
         'clu_id', 'crop code 1', 'crop name 1', 'acres 1','crop code 2', 'crop name 2', 'acres 2', 'crop code 3',
@@ -220,7 +222,7 @@ for clu_id in results_dict:
 df = pd.DataFrame(list(zip(clu_ids, results, confidences, ml_model_codes, tiles, s3_links, latests)),
                   columns=['clu_id', 'crop_identification', 'confidence', 'ml_model_code', 'tile', 's3_link', 'latest'])
 df.insert(3, 'execution_date', today)
-df.to_csv(f'crops_acres_df_{current_time}.csv')
+df.to_csv(f'{Y_num}_crops_acres_df_{current_time}.csv')
 #df.to_json(f'crops_json{current_time}.JSON', orient='records')
 # Initialize an empty list to store the dictionaries
 dict_list = []
@@ -256,6 +258,6 @@ for _, row in df.iterrows():
     dict_list.append(my_dict2)
 
 # Write the `dict_list` to the JSON file
-with open(f'crops_acres_json_{current_time}.json', 'w') as f:
+with open(f'{Y_num}_crops_acres_json_{current_time}.json', 'w') as f:
     json.dump(dict_list, f)
 #

@@ -13,7 +13,7 @@ python sort_clu_chips_CI.py $CI_field $geojson_filepath && \
 python make_stats_v2_CI.py $geojson_filepath $client_bucket $forecast_file && \
 rm -rf sorted && mkdir sorted && \
 python sort_clu_chips_CI.py $CI_field $updated_geojson_filepath && \
-python make_stats_CI.py $updated_geojson_filepath $client_bucket && \
+python make_stats_CI.py $updated_geojson_filepath $client_bucket $CI_field && \
 python upload_chips_CI.py $client_bucket && \
 aws s3 mv --recursive --exclude "*" --include "crops_acres*.csv" ./ s3://${s3_csv_target_dir} && \
 aws s3 mv --recursive --exclude "*" --include "*.json" ./ s3://${s3_csv_target_dir} && \
