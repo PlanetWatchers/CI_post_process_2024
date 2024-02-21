@@ -23,17 +23,11 @@ parser.add_argument('-f', '--from_values', required=False, nargs='+', type=int, 
 parser.add_argument('-t', '--to_values', required=False, nargs='+', type=int,
                     default=[102, 41, 21, 81, 11, 81, 101],
                     help='set to values to reclassify')
-parser.add_argument('-shapefile_path', '--shapefile_path', required=False, help='Specify directory that contains us_grid shapefile',
-                    default=r"C:\Users\User\Documents\ProAg_FMH_CC_2023\Combined_CC_2023_vars\Combined_us_grid_clus_2023\us_grid_proag_FMH_2023.shp")
 args = parser.parse_args()
 saveDir = args.directory
 Ynumber = "_" + saveDir.split("\\")[-1].split("_")[0]
 saveDir2 = args.directory2
-shapefile_path = args.shapefile_path
 
-
-# us_grid tiles shapefile for clipping the cropscape raster to the CC relevant tile.
-shapefile = gpd.read_file(shapefile_path)
 
 # # Get a list of all the files in the input folders
 files1 = os.listdir(saveDir)

@@ -16,7 +16,7 @@ footprints_geojson_file_path = r"C:\Users\User\Documents\ProAg_FMH_CC_2023\Combi
 with open(footprints_geojson_file_path) as src:
     features = json.load(src)['features']
 # hudson_fps.extend(proag_fps)
-season = '2023'
+season = '2024'
 s3 = boto3.client('s3')
 #client = 'proag'
 # s3_raster_prefix = f'data/cropid/{season}/proag/'
@@ -49,12 +49,12 @@ for feature in features:
             's3_clus_geojson_path': s3_geojson_path,
             'clu_field': s3_geojson_cluid_field,
             's3_out_dir': f'pw-crop-classification-rs/2024/general/{raster["Key"].split("/")[-1][:-4]}/{stack_id}/',
-            # 's3_out_dir': f'pw-crop-classification-rs/2023/general/{new_raster_key}/{stack_id}/',
+            # 's3_out_dir': f'pw-crop-classification-rs/2024/general/{new_raster_key}/{stack_id}/',
 
             'stack_id': stack_id,
             'stack_geometry': str(feature['geometry']['coordinates'][0]).replace(' ', ''),
             # json.dumps(geom), #
-            'insert_to_db': '0'
+
         }
         print(f'submitting job with parameters: {parameters}')
         res = batch.submit_job(

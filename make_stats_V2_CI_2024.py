@@ -118,7 +118,7 @@ for f in files:
         # if early classification keep conf medium
         if today > str(datetime.date(2024, 7, 1)):
             if ml_model_code == 'f' or (ml_model_code[1].isdigit() and int(ml_model_code[1]) >= 5):
-        #if (today > str(datetime.date(2023, 7, 1))) and ((int(ml_model_code[-1]) >= 5) or (ml_model_code == 'f')):
+        #if (today > str(datetime.date(2024, 7, 1))) and ((int(ml_model_code[-1]) >= 5) or (ml_model_code == 'f')):
                 classification = 0.3
             else:
                 classification = 0.1

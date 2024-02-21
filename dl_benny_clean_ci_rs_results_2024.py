@@ -23,7 +23,7 @@ for pref in prefixes:
   # name of sub folders in Y1_10m_cropid
   prefix = pref['Prefix']
   print(prefix)
-  # name of footprint - like: cropid_2023_11
+  # name of footprint - like: cropid_2024_11
   fp_id = prefix.split('/')[-2]
   keys = s3.list_objects_v2(Bucket=bucket, Prefix=prefix)['Contents']
   for key in keys:
